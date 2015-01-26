@@ -37,3 +37,25 @@ BAR is:                  0x20818a230
  FOO ==  BAR -> True
 ```
 
+### Can Shell differentiate between these cases?
+
+Yes
+
+```
+wjm@wjm-desktop:~$ if [ -z ${BAR+x} ]; then echo "var is unset"; else echo "var is set to '$BAR'"; fi
+var is unset
+wjm@wjm-desktop:~$ echo $BAR
+
+wjm@wjm-desktop:~$ if [ -z ${BAR+x} ]; then echo "var is unset"; else echo "var is set to '$BAR'"; fi
+var is unset
+wjm@wjm-desktop:~$ export BAR=""
+wjm@wjm-desktop:~$ echo $BAR
+
+wjm@wjm-desktop:~$ if [ -z ${BAR+x} ]; then echo "var is unset"; else echo "var is set to '$BAR'"; fi
+var is set to ''
+wjm@wjm-desktop:~$ export BAR="bar"
+wjm@wjm-desktop:~$ echo $BAR
+bar
+wjm@wjm-desktop:~$ if [ -z ${BAR+x} ]; then echo "var is unset"; else echo "var is set to '$BAR'"; fi
+var is set to 'bar'
+```
